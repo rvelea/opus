@@ -39,7 +39,11 @@
 
 #if (defined(OPUS_X86_MAY_HAVE_SSE) && !defined(FIXED_POINT)) \
   || ((defined(OPUS_X86_MAY_HAVE_SSE4_1) || defined(OPUS_X86_MAY_HAVE_SSE2)) && defined(FIXED_POINT))
+#if (defined(OPUS_X86_MAY_HAVE_AVX) && !defined(FIXED_POINT))
+#include "x86/pitch_avx.h"
+#else
 #include "x86/pitch_sse.h"
+#endif
 #endif
 
 #if defined(MIPSr1_ASM)
