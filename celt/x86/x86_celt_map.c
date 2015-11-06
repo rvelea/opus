@@ -88,7 +88,7 @@ opus_val32 (*const CELT_INNER_PROD_IMPL[OPUS_ARCHMASK + 1])(
 
 #endif
 
-# else
+# else // Floating Point
 
 #if defined(OPUS_X86_MAY_HAVE_SSE) && !defined(OPUS_X86_PRESUME_SSE)
 
@@ -102,7 +102,7 @@ void (*const XCORR_KERNEL_IMPL[OPUS_ARCHMASK + 1])(
   MAY_HAVE_SSE(xcorr_kernel),
   MAY_HAVE_SSE(xcorr_kernel),
   MAY_HAVE_SSE(xcorr_kernel),
-  MAY_HAVE_SSE(xcorr_kernel)
+  MAY_HAVE_AVX(xcorr_kernel)
 };
 
 opus_val32 (*const CELT_INNER_PROD_IMPL[OPUS_ARCHMASK + 1])(
@@ -114,7 +114,7 @@ opus_val32 (*const CELT_INNER_PROD_IMPL[OPUS_ARCHMASK + 1])(
   MAY_HAVE_SSE(celt_inner_prod),
   MAY_HAVE_SSE(celt_inner_prod),
   MAY_HAVE_SSE(celt_inner_prod),
-  MAY_HAVE_SSE(celt_inner_prod)
+  MAY_HAVE_AVX(celt_inner_prod)
 };
 
 void (*const DUAL_INNER_PROD_IMPL[OPUS_ARCHMASK + 1])(
@@ -129,7 +129,7 @@ void (*const DUAL_INNER_PROD_IMPL[OPUS_ARCHMASK + 1])(
   MAY_HAVE_SSE(dual_inner_prod),
   MAY_HAVE_SSE(dual_inner_prod),
   MAY_HAVE_SSE(dual_inner_prod),
-  MAY_HAVE_SSE(dual_inner_prod)
+  MAY_HAVE_AVX(dual_inner_prod)
 };
 
 void (*const COMB_FILTER_CONST_IMPL[OPUS_ARCHMASK + 1])(
@@ -145,7 +145,7 @@ void (*const COMB_FILTER_CONST_IMPL[OPUS_ARCHMASK + 1])(
   MAY_HAVE_SSE(comb_filter_const),
   MAY_HAVE_SSE(comb_filter_const),
   MAY_HAVE_SSE(comb_filter_const),
-  MAY_HAVE_SSE(comb_filter_const)
+  MAY_HAVE_AVX(comb_filter_const)
 };
 
 

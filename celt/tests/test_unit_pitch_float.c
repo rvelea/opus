@@ -1,3 +1,7 @@
+// Copyright 2015 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the Chromium LICENSE file.
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -82,7 +86,7 @@ static int test_xcorr_kernel(const int data_size, const float min_range, const f
 	float sum_c[4] = {0,}, sum_simd[4] = {0,};
 	float x_c[data_size], y_c[data_size + 3];
 	float x_simd[data_size], y_simd[data_size + 3];
-	float rmse = 0.0;
+	double rmse = 0.0;
 	int i;
 
 	// Generate random input data.
@@ -103,11 +107,11 @@ static int test_xcorr_kernel(const int data_size, const float min_range, const f
 
 	// Check error.
 	for (i = 0; i < 4; i++) {
-		rmse += (sum_c[i] - sum_simd[i]) * (sum_c[i] - sum_simd[i]);
+		rmse += (double)(sum_c[i] - sum_simd[i]) * (double)(sum_c[i] - sum_simd[i]);
 	}
 	rmse = sqrt(rmse / 4);
 	if (rmse > step) {
-		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6f\n",
+		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6lf\n",
 				__FUNCTION__, min_range, max_range, rmse);
 		status = PITCH_TEST_FAIL;
 	}
@@ -121,7 +125,7 @@ static int test_dual_inner_prod(const int data_size, const float min_range, cons
 	float x_simd[data_size], y_simd[data_size], z_simd[data_size];
 	float xy1_c, xy2_c;
 	float xy1_simd, xy2_simd;
-	float rmse = 0.0;
+	double rmse = 0.0;
 	int i;
 
 	// Generate random input data.
@@ -140,12 +144,12 @@ static int test_dual_inner_prod(const int data_size, const float min_range, cons
 	TIME_FUNCTION(dual_inner_prod_simd(x_simd, y_simd, z_simd, data_size, &xy1_simd, &xy2_simd), time_simd);
 
 	// Check error.
-	rmse += (xy1_c - xy1_simd) * (xy1_c - xy1_simd) +
-			(xy2_c - xy2_simd) * (xy2_c - xy2_simd);
+	rmse += (double)(xy1_c - xy1_simd) * (double)(xy1_c - xy1_simd) +
+			(double)(xy2_c - xy2_simd) * (double)(xy2_c - xy2_simd);
 
 	rmse = sqrt(rmse / 2);
 	if (rmse > step) {
-		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6f\n",
+		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6lf\n",
 				__FUNCTION__, min_range, max_range, rmse);
 		status = PITCH_TEST_FAIL;
 	}
@@ -159,7 +163,7 @@ static int test_celt_inner_prod(const int data_size, const float min_range, cons
 	float x_simd[data_size], y_simd[data_size];
 	float f_c;
 	float f_simd;
-	float rmse = 0.0;
+	double rmse = 0.0;
 	int i;
 
 	// Generate random input data.
@@ -176,11 +180,11 @@ static int test_celt_inner_prod(const int data_size, const float min_range, cons
 	TIME_FUNCTION((f_simd = celt_inner_prod_simd(x_simd, y_simd, data_size)), time_simd);
 
 	// Check error.
-	rmse += (f_c - f_simd) * (f_c - f_simd);
+	rmse += (double)(f_c - f_simd) * (double)(f_c - f_simd);
 
 	rmse = sqrt(rmse);
 	if (rmse > step) {
-		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6f\n",
+		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6lf\n",
 				__FUNCTION__, min_range, max_range, rmse);
 		status = PITCH_TEST_FAIL;
 	}
@@ -216,7 +220,7 @@ static int test_comb_filter_const(const int data_size, const float min_range, co
 	int status = PITCH_TEST_PASS;
 	float x_c[data_size], y_c[data_size];
 	float x_simd[data_size], y_simd[data_size];
-	float rmse = 0.0;
+	double rmse = 0.0;
 	int i;
 	int N = data_size / 2;
 
@@ -237,12 +241,12 @@ static int test_comb_filter_const(const int data_size, const float min_range, co
 
 	// Check error.
 	for (i = 0; i < data_size; i++) {
-		rmse += (y_c[i] - y_simd[i]) * (y_c[i] - y_simd[i]);
+		rmse += (double)(y_c[i] - y_simd[i]) * (double)(y_c[i] - y_simd[i]);
 	}
 	rmse = sqrt(rmse / data_size);
 
 	if (rmse > step) {
-		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6f\n",
+		printf("Warning RMSE for %s in [%.6f, %.6f] = %.6lf\n",
 				__FUNCTION__, min_range, max_range, rmse);
 		status = PITCH_TEST_FAIL;
 	}

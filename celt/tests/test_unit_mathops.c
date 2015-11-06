@@ -62,6 +62,9 @@
 #  include "x86/pitch_sse4_1.c"
 #  include "x86/celt_lpc_sse.c"
 # endif
+# if defined(OPUS_X86_MAY_HAVE_AVX)
+#  include "x86/pitch_avx.c"
+# endif
 # include "x86/x86_celt_map.c"
 #elif defined(OPUS_ARM_ASM) || defined(OPUS_ARM_MAY_HAVE_NEON_INTR)
 # include "arm/armcpu.c"
