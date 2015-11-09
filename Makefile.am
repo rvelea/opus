@@ -154,6 +154,9 @@ celt_tests_test_unit_pitch_float_SOURCES = celt/tests/test_unit_pitch_float.c
 celt_tests_test_unit_pitch_float_LDADD = $(LIBM)
 endif
 
+celt_tests_test_unit_pitch_float_SOURCES = celt/tests/test_unit_pitch_float.c
+celt_tests_test_unit_pitch_float_LDADD = $(LIBM)
+
 if CUSTOM_MODES
 pkginclude_HEADERS += include/opus_custom.h
 if EXTRA_PROGRAMS

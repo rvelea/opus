@@ -22,14 +22,7 @@
 #include "pitch.h"
 
 #if !defined(FIXED_POINT)
-#if defined(OPUS_X86_MAY_HAVE_AVX)
-#include "x86/pitch_avx.c"
-#define SIMD_TYPE				"AVX"
-#define xcorr_kernel_simd		xcorr_kernel_avx
-#define dual_inner_prod_simd 	dual_inner_prod_avx
-#define celt_inner_prod_simd	celt_inner_prod_avx
-#define comb_filter_const_simd	comb_filter_const_avx
-#elif defined(OPUS_X86_MAY_HAVE_SSE)
+#if defined(OPUS_X86_MAY_HAVE_SSE)
 #include "x86/pitch_sse.c"
 #define SIMD_TYPE				"SSE"
 #define xcorr_kernel_simd		xcorr_kernel_sse
@@ -37,7 +30,7 @@
 #define celt_inner_prod_simd	celt_inner_prod_sse
 #define comb_filter_const_simd	comb_filter_const_sse
 #else
-#warning "No SIMD implementation found, using C definitions"
+#pragma message "No SIMD implementation found, using C definitions"
 #define SIMD_TYPE				"C"
 #define xcorr_kernel_simd		xcorr_kernel_c
 #define dual_inner_prod_simd	dual_inner_prod_simd_c
@@ -69,11 +62,12 @@ static inline double seconds() {
 
 // Computes duration of function call. And accumulates in time variable.
 #define TIME_FUNCTION(function, time) do {  \
-		double start = seconds();      \
-		(function);                    \
-		*time += seconds() - start;    \
+		double start = seconds();      		\
+		(function);                   	 	\
+		*time += seconds() - start;    		\
 } while (0)
 
+// Typedef and struct for handling individual tests.
 typedef int (*test_fn)(const int, const float, const float, const float, double *, double *);
 struct pitch_test {
 	const char *name;
@@ -192,7 +186,7 @@ static int test_celt_inner_prod(const int data_size, const float min_range, cons
 }
 
 // Function copied from celt.c.
-static __attribute__((noinline)) void comb_filter_const_c(opus_val32 *y, opus_val32 *x, int T, int N,
+static void comb_filter_const_c(opus_val32 *y, opus_val32 *x, int T, int N,
 		opus_val16 g10, opus_val16 g11, opus_val16 g12) {
 	opus_val32 x0, x1, x2, x3, x4;
 	int i;
